@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageId>Xfrogcn.WXMPSDK</PackageId>
+    <PackageVersion>1.0.0-beta2020091301</PackageVersion>
+    <Authors>王海波</Authors>
+    <Copyright>王海波</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
