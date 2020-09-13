@@ -4,6 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageId>Xfrogcn.WXMPSDK</PackageId>
     <PackageVersion>1.0.0-beta2020091301</PackageVersion>
+    <RepositoryUrl>https://gitee.com/WuYeCai/Xfrogcn.WXSDK</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <Authors>王海波</Authors>
     <Copyright>王海波</Copyright>
   </PropertyGroup>
@@ -13,8 +16,13 @@
     <Folder Include="Entities\Events\" />
     <Folder Include="Entities\Receive\" />
     <Folder Include="Entities\Reply\" />
+    <Folder Include="SDK\" />
+    <Folder Include="Dto\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Xfrogcn.AspNetCore.Extensions\src\Extensions\Xfrogcn.AspNetCore.Extensions.csproj" />
   </ItemGroup>
 </Project>
