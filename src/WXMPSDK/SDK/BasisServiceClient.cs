@@ -6,12 +6,12 @@ using WXMPSDK.Dto;
 namespace WXMPSDK
 {
     /// <summary>
-    /// 对话服务
+    /// 基础支持服务
     /// </summary>
-    public class SessionServiceClient
+    public class BasisServiceClient
     {
         private readonly HttpClient _client;
-        public SessionServiceClient(HttpClient client)
+        public BasisServiceClient(HttpClient client)
         {
             _client = client;
             if(_client.BaseAddress == null)

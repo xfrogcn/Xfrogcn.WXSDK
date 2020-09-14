@@ -18,6 +18,8 @@
     <Folder Include="Entities\Reply\" />
     <Folder Include="SDK\" />
     <Folder Include="Dto\" />
+    <Folder Include="Dto\Request\" />
+    <Folder Include="Dto\Response\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
