@@ -67,5 +67,12 @@ namespace WXMPSDK.Entities
         /// 点击菜单跳转小程序的事件推送
         /// </summary>
         public const string ViewMiniProgram = "view_miniprogram";
+
+        /// <summary>
+        /// 模版消息发送完成事件
+        /// </summary>
+        public const string TemplateSendJobFinish = "TEMPLATESENDJOBFINISH";
+
+
     }
 }

@@ -87,5 +87,41 @@ namespace WXMPSDKTests.SDK
                 ToUser = openId
             });
         }
+
+
+        [Fact(DisplayName = "模版消息")]
+        public async Task Test2()
+        {
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("./secrets/config.json")
+                .Build();
+
+            string appId = config["appId"];
+            string appSecret = config["appSecret"];
+            string openId = config["openId"];
+            IServiceCollection sc = new ServiceCollection()
+                .AddLogging()
+                .AddTestLoggerProvider()
+                .AddDistributedMemoryCache()
+                .AddWXMPSDK(appId, appSecret);
+
+            var sp = sc.BuildServiceProvider();
+            var factory = sp.GetRequiredService<WXMPClientFactory>();
+            var wxClient = factory.CreateWXClient(appId);
+
+            var r = await wxClient.TemplateServiceClient
+                .SendTemplateMessage(new WXTemplateMessage()
+                {
+                    ToUser = openId,
+                    TemplateId = "ePYwrZle0Si2QSxBtLLmo8FFGG6vF_12-o1j_buIxLE",
+                    Url = "https://www.baidu.com?keyword=hello",
+                    Data = new System.Collections.Generic.Dictionary<string, TemplateMessageDataLine>()
+                    {
+                        {"orderNo", new TemplateMessageDataLine(){ Value = "DD1001", Color = "red"} },
+                        {"money", new TemplateMessageDataLine( ){ Value = "123.00"} }
+                    },
+                    Color = "#173177"
+                });
+        }
     }
 }
