@@ -22,6 +22,12 @@ namespace WXMPSDK.Entities
         [XmlElement(ElementName = "Content")]
         public string Content { get; set; }
 
+        /// <summary>
+        /// 点击的菜单ID
+        /// </summary>
+        [XmlElement(ElementName = "bizmsgmenuid", IsNullable = true)]
+        public string BizMsgMenuId { get; set; }
+
         public override string Action => "发送文本消息";
     }
 }

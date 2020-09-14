@@ -54,6 +54,12 @@ namespace WXMPSDK
             });
         }
 
+        /// <summary>
+        /// 设置客服帐号的头像
+        /// </summary>
+        /// <param name="accountName">账号名称</param>
+        /// <param name="imgFilePath">头像图片路径</param>
+        /// <returns></returns>
         public Task<WXResponse> UploadKfHeadImg(string accountName, string imgFilePath)
         {
             if (!File.Exists(imgFilePath))
@@ -63,14 +69,47 @@ namespace WXMPSDK
             return UploadKfHeadImg(accountName, File.OpenRead(imgFilePath));
         }
 
+        /// <summary>
+        /// 设置客服帐号的头像
+        /// </summary>
+        /// <param name="accountName">账号名称</param>
+        /// <param name="imgStream">图片流</param>
+        /// <returns></returns>
         public async Task<WXResponse> UploadKfHeadImg(string accountName, Stream imgStream)
         {
             return new WXResponse();
         }
 
+        /// <summary>
+        /// 获取所有客服账号
+        /// </summary>
+        /// <returns></returns>
         public async Task<WXCustomListResponse> GetKfList()
         {
             return await _client.GetAsync<WXCustomListResponse>("customservice/getkflist");
+        }
+
+        /// <summary>
+        /// 发送客服消息
+        /// </summary>
+        /// <param name="msg">消息内容</param>
+        /// <returns></returns>
+        public async Task<WXResponse> SendMessage(WXSendMessageBase msg)
+        {
+            return await _client.PostAsync<WXResponse>("cgi-bin/message/custom/send", msg);
+        }
+
+        /// <summary>
+        /// 客服输入状态
+        /// </summary>
+        /// <param name="toUser">用户</param>
+        /// <returns></returns>
+        public async Task<WXResponse> SendTypingCommand(string toUser)
+        {
+            return await _client.PostAsync<WXResponse>("", new WXTypingCommand()
+            {
+                ToUser = toUser
+            });
         }
     }
 }

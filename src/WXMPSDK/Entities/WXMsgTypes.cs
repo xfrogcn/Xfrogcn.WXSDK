@@ -52,5 +52,25 @@ namespace WXMPSDK.Entities
         /// 图文
         /// </summary>
         public const string News = "news";
+
+        /// <summary>
+        /// 图文消息（点击跳转到图文消息页面） 
+        /// </summary>
+        public const string MPNews = "mpnews";
+
+        /// <summary>
+        /// 菜单消息
+        /// </summary>
+        public const string MsgMenu = "msgmenu";
+
+        /// <summary>
+        /// 卡券
+        /// </summary>
+        public const string WXCard = "wxcard";
+
+        /// <summary>
+        /// 小程序
+        /// </summary>
+        public const string MiniProgramPage = "miniprogrampage";
     }
 }
