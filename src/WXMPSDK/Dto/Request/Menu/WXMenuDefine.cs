@@ -113,17 +113,16 @@ namespace WXMPSDK.Dto
 
     }
 
-    [JsonConverter(typeof(WXMenuButtonConverter))]
+    [JsonConverter(typeof(WXMenuItemConverter))]
     public class MenuItem
     {
         [JsonPropertyName("name")]
         public string Name { get; set; }
     }
 
-    [JsonConverter(typeof(MenuButtonTypeEnumConverter))]
+    //[JsonConverter(typeof(MenuButtonTypeEnumConverter))]
     public enum MenuButtonTypeEnum
     {
-        
         Click,
         View,
         MiniProgram,
@@ -137,44 +136,44 @@ namespace WXMPSDK.Dto
         ViewLimited
     }
 
-    public class MenuButtonTypeEnumConverter : JsonConverter<MenuButtonTypeEnum>
-    {
-        private static Dictionary<MenuButtonTypeEnum, string> buttonTypeMapper
-            = new Dictionary<MenuButtonTypeEnum, string>()
-            {
-                { MenuButtonTypeEnum.Click, "click" },
-                { MenuButtonTypeEnum.View, "view" },
-                { MenuButtonTypeEnum.MiniProgram, "miniprogram" },
-                { MenuButtonTypeEnum.ScanCodeWaitMsg, "scancode_waitmsg" },
-                { MenuButtonTypeEnum.ScanCodePush, "scancode_push" },
-                { MenuButtonTypeEnum.PicSysPhoto, "pic_sysphoto" },
-                { MenuButtonTypeEnum.PicPhotoOrAlbum, "pic_photo_or_album" },
-                { MenuButtonTypeEnum.PicWeiXin, "pic_weixin" },
-                { MenuButtonTypeEnum.LocationSelect, "location_select" },
-                { MenuButtonTypeEnum.MediaId, "media_id" },
-                { MenuButtonTypeEnum.ViewLimited, "view_limited" },
-            };
+    //public class MenuButtonTypeEnumConverter : JsonConverter<MenuButtonTypeEnum>
+    //{
+    //    private static Dictionary<MenuButtonTypeEnum, string> buttonTypeMapper
+    //        = new Dictionary<MenuButtonTypeEnum, string>()
+    //        {
+    //            { MenuButtonTypeEnum.Click, "click" },
+    //            { MenuButtonTypeEnum.View, "view" },
+    //            { MenuButtonTypeEnum.MiniProgram, "miniprogram" },
+    //            { MenuButtonTypeEnum.ScanCodeWaitMsg, "scancode_waitmsg" },
+    //            { MenuButtonTypeEnum.ScanCodePush, "scancode_push" },
+    //            { MenuButtonTypeEnum.PicSysPhoto, "pic_sysphoto" },
+    //            { MenuButtonTypeEnum.PicPhotoOrAlbum, "pic_photo_or_album" },
+    //            { MenuButtonTypeEnum.PicWeiXin, "pic_weixin" },
+    //            { MenuButtonTypeEnum.LocationSelect, "location_select" },
+    //            { MenuButtonTypeEnum.MediaId, "media_id" },
+    //            { MenuButtonTypeEnum.ViewLimited, "view_limited" },
+    //        };
 
-        private static Dictionary<string, MenuButtonTypeEnum> enumMapper
-            = new Dictionary<string, MenuButtonTypeEnum>();
+    //    private static Dictionary<string, MenuButtonTypeEnum> enumMapper
+    //        = new Dictionary<string, MenuButtonTypeEnum>();
 
-        static MenuButtonTypeEnumConverter()
-        {
-            foreach(var kv in buttonTypeMapper)
-            {
-                enumMapper.Add(kv.Value, kv.Key);
-            }
-        }
+    //    static MenuButtonTypeEnumConverter()
+    //    {
+    //        foreach(var kv in buttonTypeMapper)
+    //        {
+    //            enumMapper.Add(kv.Value, kv.Key);
+    //        }
+    //    }
 
-        public override MenuButtonTypeEnum Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            string str = reader.GetString().ToLower();
-            return enumMapper[str];
-        }
+    //    public override MenuButtonTypeEnum Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    //    {
+    //        string str = reader.GetString().ToLower();
+    //        return enumMapper[str];
+    //    }
 
-        public override void Write(Utf8JsonWriter writer, MenuButtonTypeEnum value, JsonSerializerOptions options)
-        {
-            writer.WriteStringValue(buttonTypeMapper[value]);
-        }
-    }
+    //    public override void Write(Utf8JsonWriter writer, MenuButtonTypeEnum value, JsonSerializerOptions options)
+    //    {
+    //        writer.WriteStringValue(buttonTypeMapper[value]);
+    //    }
+    //}
 }

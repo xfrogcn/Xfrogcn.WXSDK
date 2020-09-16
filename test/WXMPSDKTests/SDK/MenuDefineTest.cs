@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using WXMPSDK.Dto;
+using Xfrogcn.AspNetCore.Extensions;
 using Xunit;
 
 namespace WXMPSDKTests.SDK
@@ -33,8 +34,8 @@ namespace WXMPSDKTests.SDK
                 Name = "name",
                 Url = "url"
             };
-
-            var json = JsonSerializer.Serialize(viewButton);
+            JsonHelper jsonHelper = new JsonHelper();
+            var json = jsonHelper.ToJson(viewButton);
 
             var btn = JsonSerializer.Deserialize<MenuItem>(json) as MenuViewButton;
             Assert.Equal("url", btn.Url);
@@ -52,22 +53,32 @@ namespace WXMPSDKTests.SDK
                     new MenuContainer(){ Name = "菜单", SubButtons = new List<MenuItem>()
                     {
                         new MenuViewButton(){ Name = "搜索", Url = "http://www.soso.com/"},
-                        new MenuMiniProgramButton(){ Name = "wxa", Url= "http://mp.weixin.qq.com", AppId ="wx286b93c14bbf93aa", PagePath = "pages/lunar/index"}
+                        new MenuMiniProgramButton(){ Name = "wxa", Url= "http://mp.weixin.qq.com", AppId ="wx286b93c14bbf93aa", PagePath = "pages/lunar/index"},
+                        new MenuContainer()
+                        {
+                            Name= "二级菜单",
+                            SubButtons = new List<MenuItem>()
+                            {
+                                new MenuViewButton(){ Name = "view",  Url = "testurl"}
+                            }
+                        }
                     }
                     }
                 }
             };
 
-            var json = JsonSerializer.Serialize(menu);
+            JsonHelper jsonHelper = new JsonHelper();
 
-            WXMenuDefine m = JsonSerializer.Deserialize<WXMenuDefine>(json);
+            var json = jsonHelper.ToJson(menu);
+
+            WXMenuDefine m = jsonHelper.ToObject<WXMenuDefine>(json);
             Assert.Equal(2, m.Buttons.Count);
             Assert.IsType<MenuClickButton>(menu.Buttons[0]);
             Assert.IsType<MenuContainer>(menu.Buttons[1]);
             Assert.IsType<MenuViewButton>((menu.Buttons[1] as MenuContainer).SubButtons[0]);
 
             Assert.Equal("wx286b93c14bbf93aa", ((menu.Buttons[1] as MenuContainer).SubButtons[1] as MenuMiniProgramButton).AppId);
-
+            Assert.IsType<MenuViewButton>(((menu.Buttons[1] as MenuContainer).SubButtons[2] as MenuContainer).SubButtons[0]);
 
 
         }

@@ -17,11 +17,8 @@
     <Folder Include="Entities\Receive\" />
     <Folder Include="Entities\Reply\" />
     <Folder Include="SDK\" />
-    <Folder Include="Dto\" />
-    <Folder Include="Dto\Request\" />
     <Folder Include="Dto\Response\" />
     <Folder Include="Dto\Request\SendMessage\" />
-    <Folder Include="Dto\Request\Menu\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
