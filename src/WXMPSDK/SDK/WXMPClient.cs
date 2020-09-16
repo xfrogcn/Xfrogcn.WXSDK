@@ -8,14 +8,15 @@ namespace WXMPSDK
             CustomServiceClient customServiceClient,
             TemplateServiceClient templateServiceClient,
             MenuClient menuClient,
-            UserManagerClient userManagerClient)
+            UserManagerClient userManagerClient,
+            AccountManagerClient accountManagerClient)
         {
-           // AccessTokenClient = accessTokenClient;
             BasisServiceClient = basisServiceClient;
             CustomServiceClient = customServiceClient;
             TemplateServiceClient = templateServiceClient;
             MenuClient = menuClient;
             UserManagerClient = userManagerClient;
+            AccountManagerClient = accountManagerClient;
         }
 
         public BasisServiceClient BasisServiceClient { get; }
@@ -24,5 +25,6 @@ namespace WXMPSDK
         public TemplateServiceClient TemplateServiceClient { get; }
         public MenuClient MenuClient { get; }
         public UserManagerClient UserManagerClient { get; }
+        public AccountManagerClient AccountManagerClient { get; }
     }
 }

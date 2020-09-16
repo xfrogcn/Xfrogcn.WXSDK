@@ -26,13 +26,15 @@ namespace WXMPSDK
             TemplateServiceClient templateServiceClient = new TemplateServiceClient(client);
             MenuClient menuClient = new MenuClient(client);
             UserManagerClient umClient = new UserManagerClient(client);
+            AccountManagerClient amClient = new AccountManagerClient(client);
 
             return new WXMPClient(
                 basisServiceClient,
                 customServiceClient,
                 templateServiceClient,
                 menuClient,
-                umClient);
+                umClient,
+                amClient);
         }
     }
 }

@@ -11,6 +11,10 @@ namespace WXMPSDK
         public MenuClient(HttpClient client)
         {
             _client = client;
+            if (_client.BaseAddress == null)
+            {
+                _client.BaseAddress = WXConstants.WXMPApiUrl;
+            }
         }
 
         /// <summary>
