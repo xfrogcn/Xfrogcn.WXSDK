@@ -105,6 +105,7 @@ namespace WXMPSDK.Dto
         public List<MenuItem> SubButtons { get; set; }
     }
 
+    
     public class MenuButtonBase : MenuItem
     {
         [JsonPropertyName("type")]
@@ -112,6 +113,7 @@ namespace WXMPSDK.Dto
 
     }
 
+    [JsonConverter(typeof(WXMenuButtonConverter))]
     public class MenuItem
     {
         [JsonPropertyName("name")]

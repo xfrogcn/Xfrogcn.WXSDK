@@ -21,6 +21,7 @@
     <Folder Include="Dto\Request\" />
     <Folder Include="Dto\Response\" />
     <Folder Include="Dto\Request\SendMessage\" />
+    <Folder Include="Dto\Request\Menu\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />

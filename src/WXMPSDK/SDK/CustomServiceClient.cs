@@ -75,9 +75,9 @@ namespace WXMPSDK
         /// <param name="accountName">账号名称</param>
         /// <param name="imgStream">图片流</param>
         /// <returns></returns>
-        public async Task<WXResponse> UploadKfHeadImg(string accountName, Stream imgStream)
+        public Task<WXResponse> UploadKfHeadImg(string accountName, Stream imgStream)
         {
-            return new WXResponse();
+            return Task.FromResult(new WXResponse());
         }
 
         /// <summary>
