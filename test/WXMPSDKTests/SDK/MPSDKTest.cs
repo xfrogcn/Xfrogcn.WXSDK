@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using WXMPSDK;
 using WXMPSDK.Dto;
@@ -122,6 +123,36 @@ namespace WXMPSDKTests.SDK
                     },
                     Color = "#173177"
                 });
+        }
+
+
+        [Fact(DisplayName = "上传临时素材")]
+        public async Task Test3()
+        {
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("./secrets/config.json")
+                .Build();
+
+            string appId = config["appId"];
+            string appSecret = config["appSecret"];
+            string openId = config["openId"];
+            IServiceCollection sc = new ServiceCollection()
+                .AddLogging(lb=>
+                {
+                    lb.SetMinimumLevel(LogLevel.Trace);
+                })
+                .AddTestLoggerProvider()
+                .AddDistributedMemoryCache()
+                .AddHttpMessageHandlerFilter()
+                .AddWXMPSDK(appId, appSecret);
+
+            var sp = sc.BuildServiceProvider();
+            var factory = sp.GetRequiredService<WXMPClientFactory>();
+            var wxClient = factory.CreateWXClient(appId);
+
+            // var r = await wxClient.MaterialClient.UploadTempMaterial(MaterialTypeEnum.Image, "./images/wx.png");
+            var r = await wxClient.MaterialClient.GetTempMaterial("8Fm6JkjhlVptuvEgbN9v_670iAhP9ZG3t_bfwkv85-6BAouwhGV2e5fhN4XBRk8B");
+
         }
     }
 }
