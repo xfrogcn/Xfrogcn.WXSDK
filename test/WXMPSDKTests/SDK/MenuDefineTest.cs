@@ -82,5 +82,51 @@ namespace WXMPSDKTests.SDK
 
 
         }
+
+
+        [Fact(DisplayName = "De_NotApiMenu_Response")]
+        public void MenuResponseTest()
+        {
+            string json = Resource1.notApiMenuResponse;
+            JsonHelper jsonHelper = new JsonHelper();
+
+            var mr = jsonHelper.ToObject<WXMenuResponse>(json);
+            Assert.NotNull(mr);
+            Assert.Equal(1, mr.IsMenuOpen);
+            Assert.IsType<MenuContainerForResponse>(mr.MenuInfo.Buttons[0]);
+            Assert.IsType<MenuTextMessageButton>(mr.MenuInfo.Buttons[1]);
+            Assert.IsType<MenuImageMessageButton>(mr.MenuInfo.Buttons[2]);
+
+            var mcfr = mr.MenuInfo.Buttons[0] as MenuContainerForResponse;
+            Assert.Equal(4, mcfr.SubButtons.List.Count);
+            Assert.IsType<MenuViewButton>(mcfr.SubButtons.List[0]);
+            Assert.IsType<MenuNewsMessageButton>(mcfr.SubButtons.List[1]);
+            Assert.IsType<MenuVideoMessageButton>(mcfr.SubButtons.List[2]);
+            Assert.IsType<MenuVoiceMessageButton>(mcfr.SubButtons.List[3]);
+
+            json = jsonHelper.ToJson(mr);
+        }
+
+        [Fact(DisplayName = "De_ApiMenu_Response")]
+        public void MenuResponseTest2()
+        {
+            string json = Resource1.apiMenuResponse;
+            JsonHelper jsonHelper = new JsonHelper();
+
+            var mr = jsonHelper.ToObject<WXMenuResponse>(json);
+            Assert.NotNull(mr);
+            Assert.Equal(1, mr.IsMenuOpen);
+            Assert.IsType<MenuClickButton>(mr.MenuInfo.Buttons[0]);
+            Assert.IsType<MenuContainerForResponse>(mr.MenuInfo.Buttons[1]);
+
+
+            var mc = mr.MenuInfo.Buttons[1] as MenuContainerForResponse;
+            Assert.Equal(3, mc.SubButtons.List.Count);
+            Assert.IsType<MenuViewButton>(mc.SubButtons.List[0]);
+            Assert.IsType<MenuViewButton>(mc.SubButtons.List[1]);
+            Assert.IsType<MenuClickButton>(mc.SubButtons.List[2]);
+
+            json = jsonHelper.ToJson(mr);
+        }
     }
 }

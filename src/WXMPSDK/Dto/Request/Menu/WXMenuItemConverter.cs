@@ -24,6 +24,11 @@ namespace WXMPSDK.Dto
                 { MenuButtonTypeEnum.LocationSelect, "location_select" },
                 { MenuButtonTypeEnum.MediaId, "media_id" },
                 { MenuButtonTypeEnum.ViewLimited, "view_limited" },
+                { MenuButtonTypeEnum.News, "news" },
+                { MenuButtonTypeEnum.Video, "video" },
+                { MenuButtonTypeEnum.Voice, "voice" },
+                { MenuButtonTypeEnum.Text, "text" },
+                { MenuButtonTypeEnum.Image, "img" },
             };
 
         class MapItem
@@ -34,9 +39,10 @@ namespace WXMPSDK.Dto
 
             public Func<Dictionary<string, object>, MenuItem> Creator { get; set; }
 
+            // 反序列化时设置属性值
             public Dictionary<string, Action<MenuItem, object>> PropertyValueSetter { get; set; }
 
-            public Dictionary<string, Action<Utf8JsonWriter, MenuItem>> PropertyWriter { get; set; }
+            public Dictionary<string, Action<Utf8JsonWriter, MenuItem, JsonSerializerOptions>> PropertyWriter { get; set; }
         }
 
         private static Dictionary<Type, MapItem> typeSerialerMapper
@@ -54,6 +60,12 @@ namespace WXMPSDK.Dto
                 { typeof(MenuMediaIdButton), new MapItem()  },
                 { typeof(MenuViewLimitedButton), new MapItem()  },
                 { typeof(MenuContainer), new MapItem() },
+                { typeof(MenuNewsMessageButton), new MapItem() },
+                { typeof(MenuVideoMessageButton), new MapItem() },
+                { typeof(MenuVoiceMessageButton), new MapItem() },
+                { typeof(MenuTextMessageButton), new MapItem() },
+                { typeof(MenuImageMessageButton), new MapItem() },
+                { typeof(MenuContainerForResponse), new MapItem() }
             };
         private static Dictionary<MenuButtonTypeEnum, Type> enumToTypeMapper
             = new Dictionary<MenuButtonTypeEnum, Type>()
@@ -68,7 +80,12 @@ namespace WXMPSDK.Dto
                 { MenuButtonTypeEnum.PicWeiXin , typeof(MenuPicWeiXinButton)},
                 { MenuButtonTypeEnum.LocationSelect , typeof(MenuLocationSelectButton) },
                 { MenuButtonTypeEnum.MediaId , typeof(MenuMediaIdButton)},
-                { MenuButtonTypeEnum.ViewLimited , typeof(MenuViewLimitedButton)}
+                { MenuButtonTypeEnum.ViewLimited , typeof(MenuViewLimitedButton)},
+                { MenuButtonTypeEnum.News, typeof(MenuNewsMessageButton)},
+                { MenuButtonTypeEnum.Video, typeof(MenuVideoMessageButton)},
+                { MenuButtonTypeEnum.Voice, typeof(MenuVoiceMessageButton)},
+                { MenuButtonTypeEnum.Text, typeof(MenuTextMessageButton)},
+                { MenuButtonTypeEnum.Image, typeof(MenuImageMessageButton)}
             };
         private static Dictionary<string, MenuButtonTypeEnum> enumMapper
             = new Dictionary<string, MenuButtonTypeEnum>(StringComparer.OrdinalIgnoreCase);
@@ -99,7 +116,7 @@ namespace WXMPSDK.Dto
             foreach (var kv in typeSerialerMapper)
             {
                 kv.Value.PropertyValueSetter = new Dictionary<string, Action<MenuItem, object>>(StringComparer.OrdinalIgnoreCase);
-                kv.Value.PropertyWriter = new Dictionary<string, Action<Utf8JsonWriter, MenuItem>>();
+                kv.Value.PropertyWriter = new Dictionary<string, Action<Utf8JsonWriter, MenuItem, JsonSerializerOptions>>();
 
                 Expression newExpression = Expression.New(kv.Key);
                 ParameterExpression mi = Expression.Variable(typeof(MenuItem), "mi");
@@ -128,6 +145,7 @@ namespace WXMPSDK.Dto
                     // 写入
                     ParameterExpression miPar = Expression.Parameter(typeof(MenuItem));
                     ParameterExpression writerPar = Expression.Parameter(typeof(Utf8JsonWriter));
+                    ParameterExpression optionsPar = Expression.Parameter(typeof(JsonSerializerOptions));
 
                     ParameterExpression v1 = Expression.Variable(pi.PropertyType, "pv");
                     var b1 = Expression.Assign(v1, Expression.MakeMemberAccess(Expression.Convert(miPar, kv.Key), pi));
@@ -137,14 +155,15 @@ namespace WXMPSDK.Dto
                     var writeValue = Expression.Call(null,
                         typeof(WXMenuItemConverter).GetMethod(nameof(WritePropertyValue), BindingFlags.Static | BindingFlags.NonPublic),
                         writerPar,
-                        Expression.Convert(v1, typeof(object)));
+                        Expression.Convert(v1, typeof(object)),
+                        optionsPar);
 
-                    var writeProc = Expression.Lambda<Action<Utf8JsonWriter, MenuItem>>(
+                    var writeProc = Expression.Lambda<Action<Utf8JsonWriter, MenuItem, JsonSerializerOptions>>(
                         Expression.Block(
                         new[] { v1 },
                         b1,
                         writePropertyName,
-                        writeValue), writerPar, miPar).Compile();
+                        writeValue), writerPar, miPar, optionsPar).Compile();
                     kv.Value.PropertyWriter.Add(name, writeProc);
 
 
@@ -242,7 +261,7 @@ namespace WXMPSDK.Dto
 
         }
 
-        private static void WritePropertyValue(Utf8JsonWriter writer, object val)
+        private static void WritePropertyValue(Utf8JsonWriter writer, object val, JsonSerializerOptions options)
         {
             if(val == null)
             {
@@ -320,7 +339,7 @@ namespace WXMPSDK.Dto
             }
             else
             {
-                throw new NotSupportedException(nameof(type));
+                JsonSerializer.Serialize(writer, val, val.GetType(), options);
             }
 
             
@@ -350,6 +369,8 @@ namespace WXMPSDK.Dto
             }
 
             MenuButtonTypeEnum? buttonType  =  null;
+            Type miType = null;
+            object sub_buttonValue = null;
             Dictionary<string, object> values = new Dictionary<string, object>();
             while (reader.Read())
             {
@@ -364,7 +385,7 @@ namespace WXMPSDK.Dto
                     reader.Read();
                     if ("type".Equals(propertyName, StringComparison.OrdinalIgnoreCase))
                     {
-                        if(reader.TokenType == JsonTokenType.Number)
+                        if (reader.TokenType == JsonTokenType.Number)
                         {
                             var typeId = reader.GetInt32();
                             buttonType = (MenuButtonTypeEnum)typeId;
@@ -377,23 +398,40 @@ namespace WXMPSDK.Dto
                                 buttonType = enumMapper[typeName];
                             }
                         }
-                        
+
+                    }
+                    else if ("sub_button".Equals(propertyName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (reader.TokenType == JsonTokenType.StartObject)
+                        {
+                            miType = typeof(MenuContainerForResponse);
+                            sub_buttonValue = GetPropertyValue(ref reader, typeof(MenuContainerButtons), options);
+                        }
+                        else if (reader.TokenType == JsonTokenType.StartArray)
+                        {
+                            miType = typeof(MenuContainer);
+                            sub_buttonValue = GetPropertyValue(ref reader, typeof(List<MenuItem>), options);
+                        }
+                        else
+                        {
+                            miType = typeof(MenuContainerForResponse);
+                        }
                     }
                     else
                     {
-                        if(propertyTypesMap.ContainsKey(propertyName))
+                        if (propertyTypesMap.ContainsKey(propertyName))
                         {
                             values.Add(propertyName, GetPropertyValue(ref reader, propertyTypesMap[propertyName], options));
                         }
-                        
+
                     }
                 }
             }
 
-            Type miType = null;
+            
             if (buttonType == null)
             {
-                miType = typeof(MenuContainer);
+                
             }
             else
             {
@@ -401,7 +439,20 @@ namespace WXMPSDK.Dto
             }
 
             MapItem mi = typeSerialerMapper[miType];
-            return mi.Creator(values);
+            var menu = mi.Creator(values);
+            if (sub_buttonValue != null)
+            {
+                switch (menu)
+                {
+                    case MenuContainer mc:
+                        mc.SubButtons = sub_buttonValue as List<MenuItem>;
+                        break;
+                    case MenuContainerForResponse mcfr:
+                        mcfr.SubButtons = sub_buttonValue as MenuContainerButtons;
+                        break;
+                }
+            }
+            return menu;
         }
 
         public override void Write(Utf8JsonWriter writer, MenuItem value, JsonSerializerOptions options)
@@ -428,6 +479,15 @@ namespace WXMPSDK.Dto
                 writer.WriteEndObject();
                 return;
             }
+            else if (value is MenuContainerForResponse mcfr)
+            {
+                writer.WritePropertyName("name");
+                writer.WriteStringValue(mcfr.Name);
+                writer.WritePropertyName("sub_button");
+                JsonSerializer.Serialize(writer, mcfr.SubButtons, typeof(MenuContainerButtons), options);
+                writer.WriteEndObject();
+                return;
+            }
 
             MenuButtonBase btnBase = value as MenuButtonBase;
             if(btnBase == null)
@@ -441,7 +501,7 @@ namespace WXMPSDK.Dto
                 var mi = typeSerialerMapper[t];
                 foreach(var pw in mi.PropertyWriter)
                 {
-                    pw.Value(writer, btnBase);
+                    pw.Value(writer, btnBase, options);
                 }
             }
 
