@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -66,7 +67,9 @@ namespace WXMPSDK
             {
                 return Task.FromResult(new WXResponse() { ErrCode = 404, ErrMsg = "头像文件不存在" });
             }
-            return UploadKfHeadImg(accountName, File.OpenRead(imgFilePath));
+            string fileName = Path.GetFileName(imgFilePath);
+            string mimeType = $"image/{Path.GetExtension(imgFilePath).TrimStart('.')}";
+            return UploadKfHeadImg(accountName, File.OpenRead(imgFilePath), mimeType, fileName);
         }
 
         /// <summary>
@@ -74,10 +77,17 @@ namespace WXMPSDK
         /// </summary>
         /// <param name="accountName">账号名称</param>
         /// <param name="imgStream">图片流</param>
+        /// <param name="mediaType">图片MIME类型</param>
+        /// <param name="fileName">文件名称</param>
         /// <returns></returns>
-        public Task<WXResponse> UploadKfHeadImg(string accountName, Stream imgStream)
+        public async Task<WXResponse> UploadKfHeadImg(string accountName, Stream imgStream, string mediaType, string fileName)
         {
-            return Task.FromResult(new WXResponse());
+            NameValueCollection qs = new NameValueCollection()
+            {
+                {"kf_account", accountName }
+            };
+            return await _client.UploadStreamAsync<WXResponse>(
+                "customservice/kfaccount/uploadheadimg", "", imgStream, fileName, mediaType, null, null, HttpMethod.Post.Method, qs);
         }
 
         /// <summary>

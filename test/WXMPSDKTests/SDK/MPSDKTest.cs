@@ -150,9 +150,9 @@ namespace WXMPSDKTests.SDK
             var factory = sp.GetRequiredService<WXMPClientFactory>();
             var wxClient = factory.CreateWXClient(appId);
 
-            // var r = await wxClient.MaterialClient.UploadTempMaterial(MaterialTypeEnum.Image, "./images/wx.png");
-            var r = await wxClient.MaterialClient.GetTempMaterial("8Fm6JkjhlVptuvEgbN9v_670iAhP9ZG3t_bfwkv85-6BAouwhGV2e5fhN4XBRk8B");
-
+            var r = await wxClient.MaterialClient.UploadTempMaterial(MaterialTypeEnum.Image, "./images/微信.png");
+            //var r = await wxClient.MaterialClient.GetTempMaterial("8Fm6JkjhlVptuvEgbN9v_670iAhP9ZG3t_bfwkv85-6BAouwhGV2e5fhN4XBRk8B");
+            Assert.NotNull(r.MediaId);
         }
     }
 }

@@ -2,6 +2,7 @@
 using WXMPSDK;
 using Xfrogcn.AspNetCore.Extensions;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -24,6 +25,8 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 throw new ArgumentNullException(nameof(secret));
             }
+
+            serviceDescriptors.TryAddSingleton<FileExtensionContentTypeProvider>();
 
             serviceDescriptors
                 .AddClientTokenProvider(options =>
