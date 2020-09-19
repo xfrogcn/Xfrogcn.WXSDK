@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WXMPSDK.Dto;
 using Xfrogcn.AspNetCore.Extensions;
+using System.Linq;
 
 namespace WXMPSDK
 {
@@ -38,6 +39,7 @@ namespace WXMPSDK
 
         }
 
+
         public MaterialClient(HttpClient client, 
             FileExtensionContentTypeProvider mimeProvider)
         {
@@ -52,6 +54,17 @@ namespace WXMPSDK
                 _mimeProvider = new FileExtensionContentTypeProvider();
             }
             _jsonHelper = new JsonHelper();
+        }
+
+
+        public string GetMaterialTypeString(MaterialTypeEnum type)
+        {
+            return materialTypeMapper[type];
+        }
+
+        public MaterialTypeEnum GetMaterialType(string typeStr)
+        {
+            return materialTypeMapper.FirstOrDefault(x => x.Value.Equals(typeStr, StringComparison.OrdinalIgnoreCase)).Key;
         }
 
         protected string GetFileMimeType(string filePath)

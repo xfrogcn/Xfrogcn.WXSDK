@@ -15,7 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="appId"></param>
         /// <param name="secret"></param>
         /// <returns></returns>
-        public static IServiceCollection AddWXMPSDK(this IServiceCollection serviceDescriptors, string appId, string secret)
+        public static IServiceCollection AddWXMPSDK(this IServiceCollection serviceDescriptors, string appId, string secret, bool isDefault = true)
         {
             if (string.IsNullOrEmpty(appId))
             {
@@ -62,6 +62,15 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddTokenMessageHandler(appId);
 
             serviceDescriptors.TryAddSingleton<WXMPClientFactory>();
+
+            if (isDefault)
+            {
+                serviceDescriptors.TryAddScoped((sp) =>
+                {
+                    WXMPClientFactory factory = sp.GetRequiredService<WXMPClientFactory>();
+                    return factory.CreateWXClient(appId);
+                });
+            }
 
             return serviceDescriptors;
         }
