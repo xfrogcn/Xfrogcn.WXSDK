@@ -29,6 +29,7 @@ namespace WXMPSDK
                 { MaterialTypeEnum.Thumb, "thumb" },
             };
 
+        public static readonly string DEFAULT_MEDIA_KEY = "media";
        
         private readonly HttpClient _client;
         private readonly FileExtensionContentTypeProvider _mimeProvider;
@@ -93,7 +94,7 @@ namespace WXMPSDK
 
             string contentType = GetFileMimeType(filePath);
 
-            return await _client.UploadFileAsync<WXMediaUploadResponse>("cgi-bin/media/upload", "", filePath, contentType, null, null, HttpMethod.Post.Method, qs);
+            return await _client.UploadFileAsync<WXMediaUploadResponse>("cgi-bin/media/upload", DEFAULT_MEDIA_KEY, filePath, contentType, null, null, HttpMethod.Post.Method, qs);
         }
 
         public async Task<WXMediaUploadResponse> UploadTempMaterial(MaterialTypeEnum mediaType, Stream stream, string mimeType, string fileName)
@@ -103,7 +104,7 @@ namespace WXMPSDK
                 {"type", materialTypeMapper[mediaType] }
             };
 
-            return await _client.UploadStreamAsync<WXMediaUploadResponse>("cgi-bin/media/upload", "", stream, fileName, mimeType, null, null, HttpMethod.Post.Method, qs);
+            return await _client.UploadStreamAsync<WXMediaUploadResponse>("cgi-bin/media/upload", DEFAULT_MEDIA_KEY, stream, fileName, mimeType, null, null, HttpMethod.Post.Method, qs);
         }
 
         /// <summary>
@@ -183,12 +184,12 @@ namespace WXMPSDK
         {
             string contentType = GetFileMimeType(filePath);
 
-            return await _client.UploadFileAsync<WXUploadImageResponse>("cgi-bin/media/uploadimg", "", filePath, contentType);
+            return await _client.UploadFileAsync<WXUploadImageResponse>("cgi-bin/media/uploadimg", DEFAULT_MEDIA_KEY, filePath, contentType);
         }
 
         public async Task<WXUploadImageResponse> UploadImage(Stream stream, string mimeType, string fileName)
         {
-            return await _client.UploadStreamAsync<WXUploadImageResponse>("cgi-bin/media/uploadimg", "", stream, fileName, mimeType);
+            return await _client.UploadStreamAsync<WXUploadImageResponse>("cgi-bin/media/uploadimg", DEFAULT_MEDIA_KEY, stream, fileName, mimeType);
         }
 
         /// <summary>
@@ -219,7 +220,7 @@ namespace WXMPSDK
             string contentType = GetFileMimeType(filePath);
 
             return await _client.UploadFileAsync<WXAddMaterialResponse>("cgi-bin/material/add_material",
-                "", filePath, contentType, "", formData, HttpMethod.Post.Method, queryString);
+                DEFAULT_MEDIA_KEY, filePath, contentType, "", formData, HttpMethod.Post.Method, queryString);
         }
 
         /// <summary>
@@ -251,7 +252,7 @@ namespace WXMPSDK
 
 
             return await _client.UploadStreamAsync<WXAddMaterialResponse>("cgi-bin/material/add_material",
-                "", stream, fileName, mimeType, "", formData, HttpMethod.Post.Method, queryString);
+                DEFAULT_MEDIA_KEY, stream, fileName, mimeType, "", formData, HttpMethod.Post.Method, queryString);
         }
 
         /// <summary>
