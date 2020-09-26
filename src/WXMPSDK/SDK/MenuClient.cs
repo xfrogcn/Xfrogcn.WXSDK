@@ -42,7 +42,7 @@ namespace WXMPSDK
         /// <returns></returns>
         public async Task<WXResponse> DeleteMenu()
         {
-            return await _client.PostAsync<WXResponse>("cgi-bin/menu/delete", null, HttpMethod.Delete.Method);
+            return await _client.GetAsync<WXResponse>("cgi-bin/menu/delete");
         }
 
         /// <summary>

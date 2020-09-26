@@ -8,7 +8,7 @@ namespace WXMPSDK.Dto
     /// <summary>
     /// 个性化菜单接口应答
     /// </summary>
-    public class WXConditionalMenuResponse
+    public class WXConditionalMenuResponse : WXResponse
     {
         [JsonPropertyName("menuid")]
         public string MenuId { get; set; }
