@@ -93,19 +93,14 @@ namespace WXMPSDK
         /// <param name="expireSeconds">过期时间</param>
         /// <param name="sceneId">场景ID</param>
         /// <returns></returns>
-        public async Task<WXCreateQrCodeResponse> CreateLimitQrCode(long expireSeconds, int sceneId)
+        public async Task<WXCreateQrCodeResponse> CreateLimitQrCode(int sceneId)
         {
-            if (expireSeconds <= 0 || expireSeconds > 2592000)
-            {
-                throw new ArgumentException("过期时间不可超过30天");
-            }
             if (sceneId < 1 || sceneId > 100000)
             {
                 throw new ArgumentException("场景ID必须在1到100000之间");
             }
             return await _client.PostAsync<WXCreateQrCodeResponse>("cgi-bin/qrcode/create", new
             {
-                expire_seconds = expireSeconds,
                 action_name = "QR_LIMIT_SCENE",
                 action_info = new
                 {
@@ -123,19 +118,10 @@ namespace WXMPSDK
         /// <param name="expireSeconds">过期时间</param>
         /// <param name="sceneStr">场景ID</param>
         /// <returns></returns>
-        public async Task<WXCreateQrCodeResponse> CreateLimitQrCode(long expireSeconds, string sceneStr)
+        public async Task<WXCreateQrCodeResponse> CreateLimitQrCode(string sceneStr)
         {
-            if (expireSeconds <= 0 || expireSeconds > 2592000)
-            {
-                throw new ArgumentException("过期时间不可超过30天");
-            }
-            if (string.IsNullOrEmpty(sceneStr) || sceneStr.Length < 1 || sceneStr.Length > 64)
-            {
-                throw new ArgumentException("场景字符串长度必须在1-64之间");
-            }
             return await _client.PostAsync<WXCreateQrCodeResponse>("cgi-bin/qrcode/create", new
             {
-                expire_seconds = expireSeconds,
                 action_name = "QR_LIMIT_STR_SCENE",
                 action_info = new
                 {
