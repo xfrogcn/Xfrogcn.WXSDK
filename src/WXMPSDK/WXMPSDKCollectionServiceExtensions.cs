@@ -5,11 +5,24 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.StaticFiles;
 using System.Net.Http;
 using System.Threading.Tasks;
+using WXMPSDK.Dto;
+using System.Linq;
+using System.IO;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class WXMPSDKCollectionServiceExtensions
     {
+        readonly static int[] invalidTokenErrCodes = new int[]
+        {
+            40001, 40002, 40014, 42001, 42007
+        };
+
+        readonly static string[] checkMediaTypes = new string[]
+        {
+            "json", "text", "xml"
+        };
+
         /// <summary>
         /// 添加微信公众号SDK
         /// </summary>
@@ -77,6 +90,26 @@ namespace Microsoft.Extensions.DependencyInjection
                         .SetProcessor(getter)
                         // 通过Url QueryString携带Accesstoken
                         .SetTokenSetter(SetTokenProcessor.QueryString)
+                        // 应答检查
+                        .SetResponseChecker(async (response) =>
+                        {
+                            try
+                            {
+                                if(checkMediaTypes.Contains( response.Content.Headers.ContentType.MediaType)
+                                    && response.Content.Headers.ContentLength <= 1024 * 2)
+                                {
+                                    var r = await response.GetObjectAsync<WXResponse>(true);
+                                    if (r == null || invalidTokenErrCodes.Contains(r.ErrCode))
+                                    {
+                                        throw new UnauthorizedAccessException("令牌非法");
+                                    }
+                                }
+                            }
+                            finally
+                            {
+
+                            }
+                        })
                         // 使用分布式缓存存储Token
                         .SetTokenCacheManager(TokenCacheManager.DistributedCacheFactory);
                 });
