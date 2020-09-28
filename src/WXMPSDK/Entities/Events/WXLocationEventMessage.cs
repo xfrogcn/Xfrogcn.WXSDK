@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 上报地理位置事件
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXLocationEventMessage : WXEventMessageBase
     {
         public override string Event

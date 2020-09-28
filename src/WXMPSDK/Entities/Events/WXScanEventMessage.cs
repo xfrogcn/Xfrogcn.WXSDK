@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 用户已关注时的事件推送
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXScanEventMessage : WXEventKeyMessageBase
     {
         public override string Event

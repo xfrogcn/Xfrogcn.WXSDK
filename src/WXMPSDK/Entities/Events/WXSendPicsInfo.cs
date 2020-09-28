@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 
 namespace WXMPSDK.Entities
 {
+    [Serializable]
     public class WXSendPicsInfo
     {
         /// <summary>
@@ -22,6 +23,7 @@ namespace WXMPSDK.Entities
     }
 
     [XmlRoot(ElementName = "item")]
+    [Serializable]
     public class WXPicItem
     {
         /// <summary>

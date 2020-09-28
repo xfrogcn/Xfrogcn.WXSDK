@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 namespace WXMPSDK.Entities
 {
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXLocationReceiveMessage : WXReceiveMessageBase
     {
         public override string MsgType

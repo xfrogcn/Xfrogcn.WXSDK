@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 弹出微信相册发图器的事件推送
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXPicWeiXinEventMessage : WXPicSysPhotoEventMessage
     {
         public override string Event

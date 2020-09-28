@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 弹出地理位置选择器的事件推送
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXLocationSelectEventMessage : WXEventKeyMessageBase
     {
         public override string Event

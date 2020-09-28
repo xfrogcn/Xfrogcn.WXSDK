@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 弹出拍照或者相册发图的事件推送
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXPicPhotoOrAlbumEventMessage : WXPicSysPhotoEventMessage
     {
         public override string Event

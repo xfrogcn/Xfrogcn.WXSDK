@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 namespace WXMPSDK.Entities
 {
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXArticlesReplyMessage : WXMessageBase
     {
         public override string MsgType

@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 弹出系统拍照发图的事件推送
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXPicSysPhotoEventMessage : WXEventKeyMessageBase
     {
 

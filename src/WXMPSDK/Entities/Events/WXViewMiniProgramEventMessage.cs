@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 点击菜单跳转小程序的事件推送
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXViewMiniProgramEventMessage : WXViewEventMessage
     {
         public override string Event

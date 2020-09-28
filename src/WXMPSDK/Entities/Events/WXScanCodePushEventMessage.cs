@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 扫码推事件的事件推送
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXScanCodePushEventMessage : WXEventKeyMessageBase
     {
         public override string Event

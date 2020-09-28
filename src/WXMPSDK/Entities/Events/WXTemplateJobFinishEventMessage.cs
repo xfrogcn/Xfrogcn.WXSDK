@@ -6,6 +6,7 @@ namespace WXMPSDK.Entities
     /// <summary>
     /// 模版消息发送完成通知
     /// </summary>
+    [Serializable]
     public class WXTemplateJobFinishEventMessage : WXEventMessageBase
     {
         public override string Event

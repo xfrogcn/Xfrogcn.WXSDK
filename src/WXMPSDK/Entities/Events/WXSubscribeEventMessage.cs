@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     ///关注事件
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXSubscribeEventMessage : WXEventKeyMessageBase
     {
         public override string Event {

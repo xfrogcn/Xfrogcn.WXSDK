@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 扫描信息
     /// </summary>
     [XmlRoot(ElementName = "ScanCodeInfo")]
+    [Serializable]
     public class WXScanCodeInfo
     {
         /// <summary>

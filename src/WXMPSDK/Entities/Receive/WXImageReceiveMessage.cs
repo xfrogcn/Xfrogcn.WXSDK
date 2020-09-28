@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 图片消息
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXImageReceiveMessage : WXReceiveMessageBase
     {
         public override string MsgType

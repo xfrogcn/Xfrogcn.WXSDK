@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 接收到的用户消息
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXReceiveMessageBase : WXMessageBase
     {
         [XmlElement(ElementName = "MsgId")]

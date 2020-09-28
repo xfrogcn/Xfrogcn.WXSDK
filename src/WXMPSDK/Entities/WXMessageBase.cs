@@ -9,6 +9,7 @@ namespace WXMPSDK.Entities
     /// 微信消息基类
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXMessageBase
     {
         /// <summary>

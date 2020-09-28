@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 namespace WXMPSDK.Entities
 {
     [XmlRoot(ElementName = "SendLocationInfo")]
+    [Serializable]
     public class WXSendLocationInfo
     {
         /// <summary>

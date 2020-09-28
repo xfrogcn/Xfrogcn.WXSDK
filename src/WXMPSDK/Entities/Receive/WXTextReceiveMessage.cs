@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 文本消息
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXTextReceiveMessage : WXReceiveMessageBase
     {
         public override string MsgType

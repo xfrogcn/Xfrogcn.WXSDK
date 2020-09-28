@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 小视频消息
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXShortVideoReceiveMessage : WXReceiveMessageBase
     {
         public override string MsgType

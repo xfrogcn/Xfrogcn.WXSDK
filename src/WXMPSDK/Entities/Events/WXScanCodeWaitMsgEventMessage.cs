@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 扫码推事件且弹出“消息接收中”提示框的事件推送
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXScanCodeWaitMsgEventMessage : WXScanCodePushEventMessage
     {
         public override string Event

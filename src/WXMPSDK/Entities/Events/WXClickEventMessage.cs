@@ -7,6 +7,7 @@ namespace WXMPSDK.Entities
     /// 点击菜单拉取消息时的事件推送
     /// </summary>
     [XmlRoot(ElementName = "xml")]
+    [Serializable]
     public class WXClickEventMessage : WXEventKeyMessageBase
     {
         public override string Event
