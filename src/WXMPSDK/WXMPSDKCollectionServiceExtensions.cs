@@ -95,7 +95,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         {
                             try
                             {
-                                if(checkMediaTypes.Contains( response.Content.Headers.ContentType.MediaType)
+                                if (checkMediaTypes.Any(mt => response.Content.Headers.ContentType.MediaType.Contains(mt))
                                     && response.Content.Headers.ContentLength <= 1024 * 2)
                                 {
                                     var r = await response.GetObjectAsync<WXResponse>(true);
