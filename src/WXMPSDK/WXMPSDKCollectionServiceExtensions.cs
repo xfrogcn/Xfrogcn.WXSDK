@@ -112,6 +112,12 @@ namespace Microsoft.Extensions.DependencyInjection
                         })
                         // 使用分布式缓存存储Token
                         .SetTokenCacheManager(TokenCacheManager.DistributedCacheFactory);
+
+                    //jsapi TICKET
+                    options.AddClient(WXConstants.WXMPApiUrl.AbsoluteUri, $"JSAPI_{appId}", "NONE")
+                        // 通过TicketClient获取
+                        .SetProcessor(new WXCertificateProcessor(appId))
+                        .SetTokenCacheManager(TokenCacheManager.DistributedCacheFactory);
                 });
 
             // 微信Token处理器
@@ -136,5 +142,7 @@ namespace Microsoft.Extensions.DependencyInjection
             return serviceDescriptors;
         }
 
+
+       
     }
 }

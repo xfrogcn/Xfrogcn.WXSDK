@@ -1,17 +1,19 @@
-﻿using System;
-namespace WXMPSDK
+﻿namespace WXMPSDK
 {
     public class WXMPClient
     {
         public WXMPClient(
+            TicketClient ticketClient,
             BasisServiceClient basisServiceClient,
             CustomServiceClient customServiceClient,
             TemplateServiceClient templateServiceClient,
             MenuClient menuClient,
             UserManagerClient userManagerClient,
             AccountManagerClient accountManagerClient,
-            MaterialClient materialClient)
+            MaterialClient materialClient,
+            AccessTokenManager tokenManager)
         {
+            TicketClient = ticketClient;
             BasisServiceClient = basisServiceClient;
             CustomServiceClient = customServiceClient;
             TemplateServiceClient = templateServiceClient;
@@ -19,7 +21,10 @@ namespace WXMPSDK
             UserManagerClient = userManagerClient;
             AccountManagerClient = accountManagerClient;
             MaterialClient = materialClient;
+            TokenManager = tokenManager;
         }
+
+        public TicketClient TicketClient { get; }
 
         public BasisServiceClient BasisServiceClient { get; }
 
@@ -29,5 +34,6 @@ namespace WXMPSDK
         public UserManagerClient UserManagerClient { get; }
         public AccountManagerClient AccountManagerClient { get; }
         public MaterialClient MaterialClient { get; }
+        public AccessTokenManager TokenManager { get; }
     }
 }
