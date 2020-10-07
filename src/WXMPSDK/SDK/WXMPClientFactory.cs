@@ -39,6 +39,7 @@ namespace WXMPSDK
             AccessTokenManager tokenManger = new AccessTokenManager(appId, provider);
 
             return new WXMPClient(
+                appId,
                 ticketClient,
                 basisServiceClient,
                 customServiceClient,

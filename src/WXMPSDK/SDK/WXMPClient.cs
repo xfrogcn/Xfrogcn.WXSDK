@@ -2,7 +2,10 @@
 {
     public class WXMPClient
     {
+        public string AppId { get; }
+
         public WXMPClient(
+            string appId,
             TicketClient ticketClient,
             BasisServiceClient basisServiceClient,
             CustomServiceClient customServiceClient,
@@ -13,6 +16,7 @@
             MaterialClient materialClient,
             AccessTokenManager tokenManager)
         {
+            AppId = appId;
             TicketClient = ticketClient;
             BasisServiceClient = basisServiceClient;
             CustomServiceClient = customServiceClient;
