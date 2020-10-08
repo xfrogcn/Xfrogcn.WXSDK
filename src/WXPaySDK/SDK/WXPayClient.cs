@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using WXPaySDK.Dto;
 
 namespace WXPaySDK.SDK
 {
@@ -25,6 +26,11 @@ namespace WXPaySDK.SDK
             request?.FillClientInfo(_ci);
             HttpResponseMessage response = await _client.PostAsync<HttpResponseMessage>("/pay/unifiedorder", request.ToXml());
             return await response.GetXmlObject<Dto.WXUnifiedOrderResponse>();
+        }
+
+        public bool ValidSignature(WXPayBase msg)
+        {
+            return msg.ValidSignature(_ci.Key);
         }
     }
 }

@@ -35,25 +35,25 @@ namespace WXPaySDK.Dto
         public string BankType { get; set; }
 
         [XmlElement("total_fee")]
-        public int TotalFee { get; set; }
+        public int? TotalFee { get; set; }
 
         [XmlElement("settlement_total_fee")]
-        public int SettlementTotalFee { get; set; }
+        public int? SettlementTotalFee { get; set; }
 
         [XmlElement("fee_type")]
         public string FeeType { get; set; }
 
         [XmlElement("cash_fee")]
-        public int CashFee { get; set; }
+        public int? CashFee { get; set; }
 
         [XmlElement("cash_fee_type")]
         public string CashFeeType { get; set; }
 
         [XmlElement("coupon_fee")]
-        public int CouponFee { get; set; }
+        public int? CouponFee { get; set; }
 
         [XmlElement("coupon_count")]
-        public int CouponCount { get; set; }
+        public int? CouponCount { get; set; }
 
         [XmlElement("transaction_id")]
         public string TransactionId { get; set; }
@@ -66,6 +66,12 @@ namespace WXPaySDK.Dto
 
         [XmlElement("time_end")]
         public string TimeEnd { get; set; }
+
+        [XmlElement("coupon_id")]
+        public string CouponId { get; set; }
+
+        [XmlElement("coupon_type")]
+        public string CouponType { get; set; }
 
 
         public static WXPaidNotify FromXml(Stream stream)
