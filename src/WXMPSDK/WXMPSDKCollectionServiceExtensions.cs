@@ -99,8 +99,11 @@ namespace Microsoft.Extensions.DependencyInjection
                                     && response.Content.Headers.ContentLength <= 1024 * 2)
                                 {
                                     var r = await response.GetObjectAsync<WXResponse>(true);
+                                //    Console.WriteLine($"{r == null} {response.Content.Headers.ContentType} {response.Content.Headers.ContentLength}");
                                     if (r == null || invalidTokenErrCodes.Contains(r.ErrCode))
                                     {
+                                        string responseStr = await response.Content?.ReadAsStringAsync();
+                                        Console.WriteLine(responseStr);
                                         throw new UnauthorizedAccessException("令牌非法");
                                     }
                                 }

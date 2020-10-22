@@ -28,6 +28,13 @@ namespace WXPaySDK.SDK
             return await response.GetXmlObject<Dto.WXUnifiedOrderResponse>();
         }
 
+        public async Task<Dto.WXOrderQueryResponse> QueryOrder(Dto.WXOrderQueryRequest request)
+        {
+            request?.FillClientInfo(_ci);
+            HttpResponseMessage response = await _client.PostAsync<HttpResponseMessage>("/pay/orderquery", request.ToXml());
+            return await response.GetXmlObject<Dto.WXOrderQueryResponse>();
+        }
+
         public bool ValidSignature(WXPayBase msg)
         {
             return msg.ValidSignature(_ci.Key);
