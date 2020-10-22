@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using WXPaySDK.Dto;
+using Xfrogcn.AspNetCore.Extensions;
 
 namespace WXPaySDK.SDK
 {
@@ -33,6 +34,25 @@ namespace WXPaySDK.SDK
             request?.FillClientInfo(_ci);
             HttpResponseMessage response = await _client.PostAsync<HttpResponseMessage>("/pay/orderquery", request.ToXml());
             return await response.GetXmlObject<Dto.WXOrderQueryResponse>();
+        }
+
+        public async Task<Dto.WXCloseOrderResponse> CloseOrder(string outTradeNo)
+        {
+            Dto.WXCloseOrderRequest request = new WXCloseOrderRequest()
+            {
+                OutTradeNo = outTradeNo,
+                NonceStr = StringExtensions.RandomString(12)
+            };
+            request.FillClientInfo(_ci);
+            HttpResponseMessage response = await _client.PostAsync<HttpResponseMessage>("/pay/closeorder", request.ToXml());
+            return await response.GetXmlObject<Dto.WXCloseOrderResponse>();
+        }
+
+        public async Task<Dto.WXRefundResponse> Refund(Dto.WXRefundRequest request)
+        {
+            request?.FillClientInfo(_ci);
+            HttpResponseMessage response = await _client.PostAsync<HttpResponseMessage>("/pay/refund", request.ToXml());
+            return await response.GetXmlObject<Dto.WXRefundResponse>();
         }
 
         public bool ValidSignature(WXPayBase msg)
